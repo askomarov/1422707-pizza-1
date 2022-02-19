@@ -12,9 +12,10 @@
         >
           <VRadioButton
             name="diameter"
-            :value="item.sizeClassMod"
+            :value="item"
             class="visually-hidden"
-            :checked="item.isChecked"
+            :checked="item.size === selectedSize.name"
+            @changeItemValue="changeSize"
           ></VRadioButton>
 
           <span>{{ item.size }}</span>
@@ -36,6 +37,15 @@ export default {
     sizes: {
       type: Array,
       required: true,
+    },
+    selectedSize: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    changeSize(value) {
+      this.$emit("changeSize", value);
     },
   },
 };

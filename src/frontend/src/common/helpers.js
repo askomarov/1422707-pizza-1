@@ -2,10 +2,23 @@ export const doughWeight = [
   {
     name: "Тонкое",
     value: "light",
+    foundation: "small",
   },
   {
     name: "Толстое",
     value: "large",
+    foundation: "big",
+  },
+];
+
+export const souceClassWord = [
+  {
+    name: "Сливочный",
+    foundation: "creamy",
+  },
+  {
+    name: "Томатный",
+    foundation: "tomato",
   },
 ];
 

@@ -11,9 +11,10 @@
         >
           <VRadioButton
             class="visually-hidden"
-            name="dought"
-            :value="item.doughClassMod"
-            :checked="item.isChecked"
+            name="dough"
+            :value="item"
+            :checked="item.name === selectedDough.name"
+            @changeItemValue="changeDough"
           >
           </VRadioButton>
 
@@ -37,6 +38,15 @@ export default {
     doughs: {
       type: Array,
       required: true,
+    },
+    selectedDough: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    changeDough(value) {
+      this.$emit("changeDough", value);
     },
   },
 };

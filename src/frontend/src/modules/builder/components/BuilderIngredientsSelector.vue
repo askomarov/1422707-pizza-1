@@ -4,21 +4,11 @@
       <h2 class="title title--small sheet__title">Выберите ингредиенты</h2>
 
       <div class="sheet__content ingredients">
-        <div class="ingredients__sauce">
-          <p>Основной соус:</p>
-          <label
-            v-for="(item, index) in sauces"
-            v-bind:key="index"
-            class="radio ingredients__input"
-          >
-            <VRadioButton
-              name="sauce"
-              :value="`соус ${item.name}`"
-              checked
-            ></VRadioButton>
-            <span>{{ item.name }}</span>
-          </label>
-        </div>
+        <BuilderSouceSelector
+          :sauces="sauces"
+          :selectedSouce="selectedSouce"
+          @changeSouce="changeSouce"
+        ></BuilderSouceSelector>
 
         <div class="ingredients__filling">
           <p>Начинка:</p>
@@ -29,31 +19,16 @@
               v-for="item in ingredients"
               :key="item.id"
             >
-              <span class="filling" :class="`filling--${item.ingredient}`">{{
-                item.name
-              }}</span>
-
-              <div class="counter counter--orange ingredients__counter">
-                <button
-                  type="button"
-                  class="counter__button counter__button--minus"
-                  disabled
-                >
-                  <span class="visually-hidden">Меньше</span>
-                </button>
-                <input
-                  type="text"
-                  name="counter"
-                  class="counter__input"
-                  value="0"
-                />
-                <button
-                  type="button"
-                  class="counter__button counter__button--plus"
-                >
-                  <span class="visually-hidden">Больше</span>
-                </button>
-              </div>
+              <AppDrag :transfer-data="item" :draggable="isDraggable">
+                <span class="filling" :class="`filling--${item.ingredient}`">{{
+                  item.name
+                }}</span>
+                <VIngredientCounter
+                  :value="item.ingredient"
+                  @changeIngredients="changeIngredients"
+                  @disableDragging="isDraggable = !$event"
+                ></VIngredientCounter>
+              </AppDrag>
             </li>
           </ul>
         </div>
@@ -63,12 +38,17 @@
 </template>
 
 <script>
-import VRadioButton from "@/components/VRadioButton.vue";
+// import { MAX_INGREDIENT_COUNT, MIN_INGREDIENT_COUNT } from "@/common/constants";
+import AppDrag from "@/components/AppDrag.vue";
+import VIngredientCounter from "@/components/VIngredientCounter.vue";
+import BuilderSouceSelector from "@/modules/builder/components/BuilderSouceSelector.vue";
 
 export default {
   name: "BuilderIngredientsSelector",
   components: {
-    VRadioButton,
+    VIngredientCounter,
+    BuilderSouceSelector,
+    AppDrag,
   },
   props: {
     sauces: {
@@ -79,7 +59,36 @@ export default {
       type: Array,
       required: true,
     },
+    selectedIngredients: {
+      type: Array,
+      required: true,
+    },
+    selectedSouce: {
+      type: Object,
+      required: true,
+    },
   },
+  data() {
+    return {
+      isDraggable: true,
+    };
+  },
+  methods: {
+    changeIngredients(name, counter) {
+      this.$emit("changeIngredients", name, counter);
+    },
+    changeSouce(value) {
+      this.$emit("changeSouce", value);
+    },
+  },
+  // computed: {
+  //   isDraggable() {
+  //     return (
+  //       this.selectedIngredients.ingredient.count >= MIN_INGREDIENT_COUNT &&
+  //       this.selectedIngredients.ingredient.count < MAX_INGREDIENT_COUNT
+  //     );
+  //   },
+  // },
 };
 </script>
 
