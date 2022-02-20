@@ -19,14 +19,14 @@
               v-for="item in ingredients"
               :key="item.id"
             >
-              <AppDrag :transfer-data="item" :draggable="isDraggable">
+              <AppDrag :transfer-data="item" :draggable="true">
                 <span class="filling" :class="`filling--${item.ingredient}`">{{
                   item.name
                 }}</span>
                 <VIngredientCounter
                   :value="item.ingredient"
+                  :ingredientCounter="item.count"
                   @changeIngredients="changeIngredients"
-                  @disableDragging="isDraggable = !$event"
                 ></VIngredientCounter>
               </AppDrag>
             </li>
@@ -68,11 +68,7 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      isDraggable: true,
-    };
-  },
+  computed: {},
   methods: {
     changeIngredients(name, counter) {
       this.$emit("changeIngredients", name, counter);
@@ -81,14 +77,6 @@ export default {
       this.$emit("changeSouce", value);
     },
   },
-  // computed: {
-  //   isDraggable() {
-  //     return (
-  //       this.selectedIngredients.ingredient.count >= MIN_INGREDIENT_COUNT &&
-  //       this.selectedIngredients.ingredient.count < MAX_INGREDIENT_COUNT
-  //     );
-  //   },
-  // },
 };
 </script>
 

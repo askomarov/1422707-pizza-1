@@ -1,24 +1,29 @@
 <template>
-  <div class="content__constructor">
-    <div
-      class="pizza"
-      :class="`pizza--foundation--${orderedPizza.dougth.foundation}-${orderedPizza.souce.classWord}`"
-    >
-      <div class="pizza__wrapper">
-        <div
-          v-for="item in orderedPizza.ingredients"
-          :key="item.id"
-          class="pizza__filling"
-          :class="ingredintClass(item)"
-        ></div>
+  <AppDrop @drop="$emit('onDrop', $event)">
+    <div class="content__constructor">
+      <div
+        class="pizza"
+        :class="`pizza--foundation--${orderedPizza.dougth.foundation}-${orderedPizza.souce.classWord}`"
+      >
+        <div class="pizza__wrapper">
+          <div
+            v-for="item in orderedPizza.ingredients"
+            :key="item.id"
+            class="pizza__filling"
+            :class="ingredintClass(item)"
+          ></div>
+        </div>
       </div>
     </div>
-  </div>
+  </AppDrop>
 </template>
 
 <script>
+import AppDrop from "@/components/AppDrop.vue";
+
 export default {
   name: "BuilderPizzaView",
+  components: { AppDrop },
   props: {
     orderedPizza: {
       type: Object,

@@ -38,13 +38,20 @@ export default {
       type: String,
       required: true,
     },
+    ingredientCounter: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {
       MAX_INGREDIENT_COUNT,
       MIN_INGREDIENT_COUNT,
-      itemCounter: 0,
+      itemCounter: this.ingredientCounter,
     };
+  },
+  computed: {
+    // onDropChangeCounter() {},
   },
   methods: {
     increaseCounter() {
@@ -54,16 +61,6 @@ export default {
     decreaseCounter() {
       this.itemCounter -= 1;
       this.$emit("changeIngredients", this.value, this.itemCounter);
-    },
-  },
-  watch: {
-    itemCounter: function (itemCounter) {
-      if (itemCounter === MAX_INGREDIENT_COUNT) {
-        this.$emit("disableDragging", true);
-        console.log(itemCounter);
-      } else {
-        this.$emit("disableDragging", false);
-      }
     },
   },
 };

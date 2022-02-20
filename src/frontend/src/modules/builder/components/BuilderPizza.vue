@@ -9,7 +9,10 @@
         @input="setPizzaName"
       />
     </label>
-    <BuilderPizzaView :orderedPizza="orderedPizza"></BuilderPizzaView>
+    <BuilderPizzaView
+      :orderedPizza="orderedPizza"
+      @onDrop="$emit('onDrop', $event)"
+    ></BuilderPizzaView>
     <div class="content__result">
       <p>Итого: {{ pizzaPrice }} ₽</p>
       <button type="button" class="button" :disabled="isBtnActive">

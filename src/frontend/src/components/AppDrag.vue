@@ -1,6 +1,6 @@
 <template>
   <div
-    :draggable="draggable"
+    :draggable="true"
     @dragstart.self="onDrag"
     @dragover.prevent
     @dragenter.prevent
@@ -19,14 +19,10 @@ export default {
       type: Object,
       required: true,
     },
-    draggable: {
-      type: Boolean,
-      default: true,
-      required: true,
-    },
   },
   methods: {
     onDrag({ dataTransfer }) {
+      // console.log(this.transferData.count);
       dataTransfer.effectAllowed = MOVE;
       dataTransfer.dropEffect = MOVE;
       dataTransfer.setData(

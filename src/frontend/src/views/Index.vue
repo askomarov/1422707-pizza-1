@@ -27,26 +27,8 @@
           :pizzaPrice="getPizzaPrice"
           :isBtnActive="isBtnActive()"
           @setPizzaName="setPizzaName"
+          @onDrop="onDrop"
         ></BuilderPizza>
-
-        <!-- <div class="content__pizza">
-          <label class="input">
-            <span class="visually-hidden">Название пиццы</span>
-            <input
-              type="text"
-              name="pizza_name"
-              placeholder="Введите название пиццы"
-              v-model="order.pizzaName"
-            />
-          </label>
-          <BuilderPizzaView :orderedPizza="order"></BuilderPizzaView>
-          <div class="content__result">
-            <p>Итого: {{ getPizzaPrice }} ₽</p>
-            <button type="button" class="button" :disabled="isBtnActive()">
-              Готовьте!
-            </button>
-          </div>
-        </div> -->
       </div>
     </form>
   </main>
@@ -128,6 +110,7 @@ export default {
           image: item.image,
           price: item.price,
           ingredient: ingredientsList.find((i) => i.name === item.name).value,
+          count: 0,
         };
       });
     },
@@ -206,6 +189,26 @@ export default {
         this.order.ingredients.length !== 0
         ? false
         : true;
+    },
+    onDrop(dropItem) {
+      let newIngredient = this.order.ingredients.find(
+        (i) => i.name === dropItem.name
+      );
+      console.log(dropItem.name);
+      if (!newIngredient) {
+        let newIngredient = dropItem;
+        newIngredient.count = 1;
+        console.log(newIngredient.count);
+        this.order.ingredients.push(newIngredient);
+      } else {
+        // alert("hi");
+        console.log(newIngredient);
+        this.order.ingredients.forEach((element) => {
+          if (element.name === newIngredient.name) {
+            element.count += 1;
+          }
+        });
+      }
     },
   },
 };
