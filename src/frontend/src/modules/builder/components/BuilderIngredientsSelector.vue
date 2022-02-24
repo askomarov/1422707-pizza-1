@@ -8,28 +8,18 @@
           :sauces="sauces"
           :selectedSouce="selectedSouce"
           @changeSouce="changeSouce"
-        ></BuilderSouceSelector>
+        />
 
         <div class="ingredients__filling">
           <p>Начинка:</p>
 
           <ul class="ingredients__list">
-            <li
-              class="ingredients__item"
+            <VIngredient
               v-for="item in ingredients"
               :key="item.id"
-            >
-              <AppDrag :transfer-data="item" :draggable="true">
-                <span class="filling" :class="`filling--${item.ingredient}`">{{
-                  item.name
-                }}</span>
-                <VIngredientCounter
-                  :value="item.ingredient"
-                  :ingredientCounter="item.count"
-                  @changeIngredients="changeIngredients"
-                ></VIngredientCounter>
-              </AppDrag>
-            </li>
+              :item="item"
+              @changeIngredients="changeIngredients"
+            />
           </ul>
         </div>
       </div>
@@ -38,17 +28,14 @@
 </template>
 
 <script>
-// import { MAX_INGREDIENT_COUNT, MIN_INGREDIENT_COUNT } from "@/common/constants";
-import AppDrag from "@/components/AppDrag.vue";
-import VIngredientCounter from "@/components/VIngredientCounter.vue";
+import VIngredient from "@/components/VIngredient.vue";
 import BuilderSouceSelector from "@/modules/builder/components/BuilderSouceSelector.vue";
 
 export default {
   name: "BuilderIngredientsSelector",
   components: {
-    VIngredientCounter,
     BuilderSouceSelector,
-    AppDrag,
+    VIngredient,
   },
   props: {
     sauces: {
@@ -68,7 +55,6 @@ export default {
       required: true,
     },
   },
-  computed: {},
   methods: {
     changeIngredients(name, counter) {
       this.$emit("changeIngredients", name, counter);

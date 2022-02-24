@@ -150,10 +150,8 @@ export default {
     },
   },
   methods: {
-    changeDough(value) {
-      this.order.dougth.name = value.name;
-      this.order.dougth.price = value.price;
-      this.order.dougth.foundation = value.foundation;
+    changeDough(name) {
+      this.order.dougth = this.doughs.find((i) => i.name === name);
     },
     changeIngredients(name, count) {
       let newIngredient = this.order.ingredients.find(
@@ -170,16 +168,14 @@ export default {
           this.order.ingredients.splice(numberOfEmpty, 1);
         }
       }
-      console.log(`name:${name}, count:${count}`);
     },
-    changeSouce(value) {
-      this.order.souce.name = value.name;
-      this.order.souce.price = value.price;
-      this.order.souce.classWord = value.classWord;
+    changeSouce(name) {
+      this.order.souce = this.sauces.find((i) => i.name === name);
     },
-    changeSize(value) {
-      this.order.size.name = value.size;
-      this.order.size.multiplier = value.multiplier;
+    changeSize(size) {
+      let newIngredient = this.sizes.find((i) => i.size === size);
+      this.order.size.name = newIngredient.size;
+      this.order.size.multiplier = newIngredient.multiplier;
     },
     setPizzaName(value) {
       this.order.pizzaName = value;
@@ -191,21 +187,19 @@ export default {
         : true;
     },
     onDrop(dropItem) {
-      let newIngredient = this.order.ingredients.find(
-        (i) => i.name === dropItem.name
-      );
-      console.log(dropItem.name);
-      if (!newIngredient) {
-        let newIngredient = dropItem;
+      if (dropItem.count === 0) {
+        let newIngredient = this.ingredients.find(
+          (i) => i.name === dropItem.name
+        );
         newIngredient.count = 1;
-        console.log(newIngredient.count);
         this.order.ingredients.push(newIngredient);
       } else {
-        // alert("hi");
-        console.log(newIngredient);
+        let newIngredient = this.order.ingredients.find(
+          (i) => i.name === dropItem.name
+        );
         this.order.ingredients.forEach((element) => {
           if (element.name === newIngredient.name) {
-            element.count += 1;
+            ++element.count;
           }
         });
       }

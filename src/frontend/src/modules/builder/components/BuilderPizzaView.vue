@@ -1,5 +1,5 @@
 <template>
-  <AppDrop @drop="$emit('onDrop', $event)">
+  <AppDrop @drop="OnDrop">
     <div class="content__constructor">
       <div
         class="pizza"
@@ -33,16 +33,24 @@ export default {
   methods: {
     ingredintClass(item) {
       let className;
-      if (item.count === 1) {
-        className = `pizza__filling--${item.ingredient}`;
-      } else if (item.count === 2) {
-        className = `pizza__filling--${item.ingredient} pizza__filling--second`;
-      } else if (item.count === 3) {
-        className = `pizza__filling--${item.ingredient} pizza__filling--third`;
+      switch (item.count) {
+        case 1:
+          className = `pizza__filling--${item.ingredient}`;
+          break;
+        case 2:
+          className = `pizza__filling--${item.ingredient} pizza__filling--second`;
+          break;
+        case 3:
+          className = `pizza__filling--${item.ingredient} pizza__filling--third`;
+          break;
       }
       return className;
     },
+    OnDrop(evt) {
+      return this.$emit("onDrop", evt);
+    },
   },
+  computed: {},
 };
 </script>
 

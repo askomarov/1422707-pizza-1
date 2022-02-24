@@ -1,5 +1,6 @@
 <template>
-  <input type="radio" @change="changeValue" :checked="checked" :value="value" />
+  <!-- <input type="radio" @change="changeValue" :checked="checked" :value="value" /> -->
+  <input type="radio" v-on="$listeners" :checked="checked" :value="value" />
 </template>
 
 <script>
@@ -7,7 +8,7 @@ export default {
   name: "RadioButton",
   props: {
     value: {
-      type: Object,
+      type: String,
       required: true,
     },
     checked: {
@@ -16,9 +17,9 @@ export default {
     },
   },
   methods: {
-    changeValue() {
-      this.$emit("changeItemValue", this.value);
-    },
+    // changeValue() {
+    //   this.$emit("changeItemValue", this.value);
+    // },
   },
 };
 </script>

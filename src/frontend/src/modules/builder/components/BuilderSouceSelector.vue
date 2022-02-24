@@ -8,10 +8,10 @@
     >
       <VRadioButton
         name="sauce"
-        :value="item"
+        :value="item.name"
         :checked="item.name === selectedSouce.name"
-        @changeItemValue="changeSouce"
-      ></VRadioButton>
+        @change="changeSouce"
+      />
       <span>{{ item.name }}</span>
     </label>
   </div>
@@ -35,8 +35,8 @@ export default {
     },
   },
   methods: {
-    changeSouce(value) {
-      this.$emit("changeSouce", value);
+    changeSouce(evt) {
+      this.$emit("changeSouce", evt.target.value);
     },
   },
 };

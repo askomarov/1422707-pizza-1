@@ -11,7 +11,7 @@
     </label>
     <BuilderPizzaView
       :orderedPizza="orderedPizza"
-      @onDrop="$emit('onDrop', $event)"
+      @onDrop="OnDrop"
     ></BuilderPizzaView>
     <div class="content__result">
       <p>Итого: {{ pizzaPrice }} ₽</p>
@@ -46,6 +46,9 @@ export default {
   methods: {
     setPizzaName(evt) {
       this.$emit("setPizzaName", evt.target.value);
+    },
+    OnDrop(evt) {
+      return this.$emit("onDrop", evt);
     },
   },
 };

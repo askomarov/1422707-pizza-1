@@ -10,11 +10,11 @@
           :key="item.id"
         >
           <VRadioButton
-            class="visually-hidden"
-            name="dough"
-            :value="item"
+            :value="item.name"
             :checked="item.name === selectedDough.name"
-            @changeItemValue="changeDough"
+            @change="changeDough"
+            name="dough"
+            class="visually-hidden"
           >
           </VRadioButton>
 
@@ -45,8 +45,8 @@ export default {
     },
   },
   methods: {
-    changeDough(value) {
-      this.$emit("changeDough", value);
+    changeDough(evt) {
+      this.$emit("changeDough", evt.target.value);
     },
   },
 };

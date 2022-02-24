@@ -1,6 +1,6 @@
 <template>
   <div
-    :draggable="true"
+    :draggable="isDraggble"
     @dragstart.self="onDrag"
     @dragover.prevent
     @dragenter.prevent
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+// import { MAX_INGREDIENT_COUNT } from "@/common/constants.js";
 import { DATA_TRANSFER_PAYLOAD, MOVE } from "@/common/constants";
 
 export default {
@@ -19,16 +20,20 @@ export default {
       type: Object,
       required: true,
     },
+    isDraggble: {
+      type: Boolean,
+      required: true,
+    },
   },
   methods: {
     onDrag({ dataTransfer }) {
-      // console.log(this.transferData.count);
       dataTransfer.effectAllowed = MOVE;
       dataTransfer.dropEffect = MOVE;
       dataTransfer.setData(
         DATA_TRANSFER_PAYLOAD,
         JSON.stringify(this.transferData)
       );
+      this.$emit("drag");
     },
   },
 };

@@ -12,10 +12,10 @@
         >
           <VRadioButton
             name="diameter"
-            :value="item"
+            :value="item.size"
             class="visually-hidden"
             :checked="item.size === selectedSize.name"
-            @changeItemValue="changeSize"
+            @change="changeSize"
           ></VRadioButton>
 
           <span>{{ item.size }}</span>
@@ -44,8 +44,8 @@ export default {
     },
   },
   methods: {
-    changeSize(value) {
-      this.$emit("changeSize", value);
+    changeSize(evt) {
+      this.$emit("changeSize", evt.target.value);
     },
   },
 };

@@ -3,7 +3,7 @@
     <button
       type="button"
       class="counter__button counter__button--minus"
-      :disabled="itemCounter === MIN_INGREDIENT_COUNT"
+      :disabled="quantity === MIN_INGREDIENT_COUNT"
       @click="decreaseCounter"
     >
       <span class="visually-hidden">Меньше</span>
@@ -12,12 +12,12 @@
       type="text"
       name="counter"
       class="counter__input"
-      :value="itemCounter"
+      :value="quantity"
       :max="MAX_INGREDIENT_COUNT"
     />
     <button
       type="button"
-      :disabled="itemCounter === MAX_INGREDIENT_COUNT"
+      :disabled="quantity === MAX_INGREDIENT_COUNT"
       class="counter__button counter__button--plus"
       @click="increaseCounter"
     >
@@ -47,20 +47,22 @@ export default {
     return {
       MAX_INGREDIENT_COUNT,
       MIN_INGREDIENT_COUNT,
-      itemCounter: this.ingredientCounter,
+      quantity: this.ingredientCounter,
     };
-  },
-  computed: {
-    // onDropChangeCounter() {},
   },
   methods: {
     increaseCounter() {
-      this.itemCounter += 1;
-      this.$emit("changeIngredients", this.value, this.itemCounter);
+      this.quantity += 1;
+      this.$emit("changeIngredients", this.value, this.quantity);
     },
     decreaseCounter() {
-      this.itemCounter -= 1;
-      this.$emit("changeIngredients", this.value, this.itemCounter);
+      this.quantity -= 1;
+      this.$emit("changeIngredients", this.value, this.quantity);
+    },
+  },
+  watch: {
+    ingredientCounter() {
+      this.quantity = this.ingredientCounter;
     },
   },
 };
