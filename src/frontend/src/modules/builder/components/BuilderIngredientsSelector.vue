@@ -16,9 +16,10 @@
           <ul class="ingredients__list">
             <VIngredient
               v-for="item in ingredients"
-              :key="item.id"
+              :key="item.class"
               :item="item"
               @changeIngredients="changeIngredients"
+              :selectedIngredients="selectedIngredients"
             />
           </ul>
         </div>
@@ -37,6 +38,11 @@ export default {
     BuilderSouceSelector,
     VIngredient,
   },
+  data() {
+    return {
+      ingredientsToOrder: {},
+    };
+  },
   props: {
     sauces: {
       type: Array,
@@ -47,7 +53,7 @@ export default {
       required: true,
     },
     selectedIngredients: {
-      type: Array,
+      type: Object,
       required: true,
     },
     selectedSouce: {
@@ -57,6 +63,7 @@ export default {
   },
   methods: {
     changeIngredients(name, counter) {
+      this.$set(this.ingredientsToOrder, name, counter);
       this.$emit("changeIngredients", name, counter);
     },
     changeSouce(value) {

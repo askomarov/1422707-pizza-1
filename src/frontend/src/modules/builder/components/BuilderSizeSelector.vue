@@ -8,17 +8,17 @@
           v-for="item in sizes"
           v-bind:key="item.id"
           class="diameter__input"
-          :class="`diameter__input--${item.sizeClassMod}`"
+          :class="`diameter__input--${item.class}`"
         >
           <VRadioButton
             name="diameter"
-            :value="item.size"
+            :value="item.class"
             class="visually-hidden"
-            :checked="item.size === selectedSize.name"
+            :checked="item.class === selectedSize.name"
             @change="changeSize"
-          ></VRadioButton>
+          />
 
-          <span>{{ item.size }}</span>
+          <span>{{ item.name }}</span>
         </label>
       </div>
     </div>

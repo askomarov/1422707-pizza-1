@@ -1,15 +1,14 @@
 <template>
   <li class="ingredients__item">
     <AppDrag
-      :transfer-data="item"
-      :isDraggble="quantity !== MAX_INGREDIENT_COUNT"
+      :transfer-data="{ [this.ingredient]: this.ingredientCounter }"
+      :isDraggble="this.ingredientCounter !== MAX_INGREDIENT_COUNT"
     >
-      <span class="filling" :class="`filling--${item.ingredient}`">{{
+      <span class="filling" :class="`filling--${item.class}`">{{
         item.name
       }}</span>
       <VIngredientCounter
-        :value="item.ingredient"
-        :ingredientCounter="item.count"
+        :value="ingredientCounter"
         @changeIngredients="changeIngredients"
       ></VIngredientCounter>
     </AppDrag>
@@ -29,21 +28,31 @@ export default {
       type: Object,
       reqiured: true,
     },
+    selectedIngredients: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
       MAX_INGREDIENT_COUNT,
-      ingredient: this.item,
+      ingredient: this.item.class,
+      ingredientCounter: 0,
     };
   },
-  computed: {
-    quantity() {
-      return this.ingredient.count;
+  methods: {
+    changeIngredients(value) {
+      this.ingredientCounter = value;
+      this.$emit("changeIngredients", this.ingredient, this.ingredientCounter);
     },
   },
-  methods: {
-    changeIngredients(name, counter) {
-      this.$emit("changeIngredients", name, counter);
+  watch: {
+    selectedIngredients: function (value) {
+      if (Object.keys(this.selectedIngredients).includes(this.ingredient)) {
+        if (value[this.ingredient] <= 3) {
+          this.ingredientCounter = value[this.ingredient];
+        }
+      }
     },
   },
 };

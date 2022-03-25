@@ -2,14 +2,14 @@
   <div class="ingredients__sauce">
     <p>Основной соус:</p>
     <label
-      v-for="(item, index) in sauces"
-      v-bind:key="index"
+      v-for="item in sauces"
+      :key="item.id"
       class="radio ingredients__input"
     >
       <VRadioButton
         name="sauce"
-        :value="item.name"
-        :checked="item.name === selectedSouce.name"
+        :value="item.class"
+        :checked="item.class === selectedSouce.name"
         @change="changeSouce"
       />
       <span>{{ item.name }}</span>

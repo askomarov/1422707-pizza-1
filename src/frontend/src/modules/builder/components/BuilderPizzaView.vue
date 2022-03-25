@@ -1,16 +1,13 @@
 <template>
   <AppDrop @drop="OnDrop">
     <div class="content__constructor">
-      <div
-        class="pizza"
-        :class="`pizza--foundation--${orderedPizza.dougth.foundation}-${orderedPizza.souce.classWord}`"
-      >
+      <div class="pizza" :class="pizzaFoundationClass">
         <div class="pizza__wrapper">
           <div
-            v-for="item in orderedPizza.ingredients"
-            :key="item.id"
+            v-for="(count, name) in this.orderedPizza.ingredients"
+            :key="name + count"
             class="pizza__filling"
-            :class="ingredintClass(item)"
+            :class="ingredintClass(count, name)"
           ></div>
         </div>
       </div>
@@ -31,17 +28,17 @@ export default {
     },
   },
   methods: {
-    ingredintClass(item) {
+    ingredintClass(count, name) {
       let className;
-      switch (item.count) {
+      switch (count) {
         case 1:
-          className = `pizza__filling--${item.ingredient}`;
+          className = `pizza__filling--${name}`;
           break;
         case 2:
-          className = `pizza__filling--${item.ingredient} pizza__filling--second`;
+          className = `pizza__filling--${name} pizza__filling--second`;
           break;
         case 3:
-          className = `pizza__filling--${item.ingredient} pizza__filling--third`;
+          className = `pizza__filling--${name} pizza__filling--third`;
           break;
       }
       return className;
@@ -50,7 +47,26 @@ export default {
       return this.$emit("onDrop", evt);
     },
   },
-  computed: {},
+  computed: {
+    pizzaFoundationClass() {
+      let foundationClass = "";
+      switch (this.orderedPizza.sauce.name) {
+        case "tomato":
+          foundationClass =
+            this.orderedPizza.dough.name === "Толстое"
+              ? "pizza--foundation--big-tomato"
+              : "pizza--foundation--small-tomato";
+          break;
+        case "creamy":
+          foundationClass =
+            this.orderedPizza.dough.name === "Толстое"
+              ? "pizza--foundation--big-creamy"
+              : "pizza--foundation--small-creamy";
+          break;
+      }
+      return foundationClass;
+    },
+  },
 };
 </script>
 

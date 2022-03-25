@@ -4,21 +4,23 @@
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
         <BuilderDoughSelector
-          :doughs="doughs"
-          :selectedDough="order.dougth"
+          :doughs="pizzas.dough"
+          :selectedDough="order.dough"
           @changeDough="changeDough"
         ></BuilderDoughSelector>
+
         <BuilderSizeSelector
-          :sizes="sizes"
+          :sizes="pizzas.sizes"
           :selectedSize="order.size"
           @changeSize="changeSize"
         ></BuilderSizeSelector>
+
         <BuilderIngredientsSelector
-          :sauces="sauces"
-          :selectedSouce="order.souce"
-          @changeSouce="changeSouce"
-          :ingredients="ingredients"
+          :ingredients="pizzas.ingredients"
+          :sauces="pizzas.sauces"
           :selectedIngredients="order.ingredients"
+          :selectedSouce="order.sauce"
+          @changeSouce="changeSouce"
           @changeIngredients="changeIngredients"
         ></BuilderIngredientsSelector>
 
@@ -36,21 +38,14 @@
 
 <script>
 //  Импортируем JSON данные и статусы для фильтров.
-import pizza from "@/static/pizza.json";
+import pizzas from "@/static/pizza.json";
 import misc from "@/static/misc.json";
 import user from "@/static/user.json";
-
-import {
-  doughWeight,
-  doughSizes,
-  ingredientsList,
-  souceClassWord,
-} from "@/common/helpers";
+import { normalizePizzas } from "@/common/helpers.js";
 
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector.vue";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
-// import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
 import BuilderPizza from "@/modules/builder/components/BuilderPizza.vue";
 
 export default {
@@ -59,123 +54,50 @@ export default {
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
-    // BuilderPizzaView,
     BuilderPizza,
   },
   data() {
     return {
-      pizza,
+      pizzas: normalizePizzas(pizzas),
       user,
       misc,
       order: {
-        dougth: {
-          name: "Толстое",
-          price: 300,
-          foundation: "big",
+        dough: {
+          name: "light",
         },
         size: {
-          name: "23 см",
-          multiplier: 1,
+          name: "normal",
         },
-        ingredients: [],
-        souce: {
-          name: "Сливочный",
-          price: 50,
-          classWord: "creamy",
+        sauce: {
+          name: "tomato",
         },
+        ingredients: {},
         price: 0,
         pizzaName: "",
       },
     };
   },
-  computed: {
-    doughs() {
-      return this.pizza.dough.map((item) => {
-        return {
-          id: item.id,
-          name: item.name,
-          image: item.image,
-          description: item.description,
-          price: item.price,
-          doughClassMod: doughWeight.find((i) => i.name === item.name).value,
-          foundation: doughWeight.find((i) => i.name === item.name).foundation,
-        };
-      });
-    },
-    ingredients() {
-      return this.pizza.ingredients.map((item) => {
-        return {
-          id: item.id,
-          name: item.name,
-          image: item.image,
-          price: item.price,
-          ingredient: ingredientsList.find((i) => i.name === item.name).value,
-          count: 0,
-        };
-      });
-    },
-    sauces() {
-      return this.pizza.sauces.map((item) => {
-        return {
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          classWord: souceClassWord.find((i) => i.name === item.name)
-            .foundation,
-        };
-      });
-    },
-    sizes() {
-      return this.pizza.sizes.map((item) => {
-        return {
-          id: item.id,
-          size: item.name,
-          image: item.image,
-          multiplier: item.multiplier,
-          sizeClassMod: doughSizes.find((i) => i.name === item.name).value,
-        };
-      });
-    },
-    getPizzaPrice() {
-      let newPizza = this.order;
-
-      let ingredientsPrice = this.order.ingredients
-        .map((item) => item.price * item.count)
-        .reduce((prev, curr) => prev + curr, 0);
-
-      newPizza.price =
-        newPizza.size.multiplier *
-        (newPizza.dougth.price + newPizza.souce.price + ingredientsPrice);
-      return newPizza.price;
-    },
-  },
   methods: {
-    changeDough(name) {
-      this.order.dougth = this.doughs.find((i) => i.name === name);
+    changeDough(dough) {
+      this.order.dough.name = dough;
     },
-    changeIngredients(name, count) {
-      let newIngredient = this.order.ingredients.find(
-        (i) => i.ingredient === name
-      );
-      if (!newIngredient) {
-        let newIngredient = this.ingredients.find((i) => i.ingredient === name);
-        newIngredient.count = count;
-        this.order.ingredients.push(newIngredient);
-      } else {
-        newIngredient.count = count;
-        if (newIngredient.count === 0) {
-          let numberOfEmpty = this.order.ingredients.indexOf(newIngredient);
-          this.order.ingredients.splice(numberOfEmpty, 1);
+    changeIngredients(ingredientName, ingredientCounter) {
+      this.$set(this.order.ingredients, ingredientName, ingredientCounter);
+      this.cleanEmptyIngredients();
+    },
+    cleanEmptyIngredients() {
+      for (let propName in this.order.ingredients) {
+        if (this.order.ingredients[propName] === 0) {
+          delete this.order.ingredients[propName];
         }
       }
+      return this.order.ingredients;
     },
-    changeSouce(name) {
-      this.order.souce = this.sauces.find((i) => i.name === name);
+    changeSouce(sauce) {
+      this.order.sauce.name = sauce;
     },
     changeSize(size) {
-      let newIngredient = this.sizes.find((i) => i.size === size);
-      this.order.size.name = newIngredient.size;
-      this.order.size.multiplier = newIngredient.multiplier;
+      this.order.size.name = size;
     },
     setPizzaName(value) {
       this.order.pizzaName = value;
@@ -186,23 +108,45 @@ export default {
         ? false
         : true;
     },
-    onDrop(dropItem) {
-      if (dropItem.count === 0) {
-        let newIngredient = this.ingredients.find(
-          (i) => i.name === dropItem.name
-        );
-        newIngredient.count = 1;
-        this.order.ingredients.push(newIngredient);
-      } else {
-        let newIngredient = this.order.ingredients.find(
-          (i) => i.name === dropItem.name
-        );
-        this.order.ingredients.forEach((element) => {
-          if (element.name === newIngredient.name) {
-            ++element.count;
-          }
-        });
+    onDrop(ingredient) {
+      this.order.ingredients = { ...this.order.ingredients, ...ingredient };
+      if (this.order.ingredients[Object.keys(ingredient)[0]] < 3) {
+        this.order.ingredients[Object.keys(ingredient)[0]] += 1;
       }
+      return this.order.ingredients;
+    },
+  },
+  computed: {
+    doughPrice() {
+      return this.pizzas.dough.find(
+        (item) => item.class === this.order.dough.name
+      ).price;
+    },
+    sizeMultiplier() {
+      return this.pizzas.sizes.find(
+        (item) => item.class === this.order.size.name
+      ).multiplier;
+    },
+    saucePrice() {
+      return this.pizzas.sauces.find(
+        (item) => item.class === this.order.sauce.name
+      ).price;
+    },
+    ingredientsPrice() {
+      let result = 0;
+      let keys = Object.keys(this.order.ingredients);
+      for (let i = 0; i < keys.length; i++) {
+        result +=
+          this.pizzas.ingredients.find((item) => item.class === keys[i]).price *
+          this.order.ingredients[keys[i]];
+      }
+      return result;
+    },
+    getPizzaPrice() {
+      return (
+        this.sizeMultiplier *
+        (this.doughPrice + this.saucePrice + this.ingredientsPrice)
+      );
     },
   },
 };

@@ -6,12 +6,12 @@
         <label
           v-for="item in doughs"
           class="dough__input"
-          :class="`dough__input--${item.doughClassMod}`"
+          :class="`dough__input--${item.class}`"
           :key="item.id"
         >
           <VRadioButton
             :value="item.name"
-            :checked="item.name === selectedDough.name"
+            :checked="item.class === selectedDough.name"
             @change="changeDough"
             name="dough"
             class="visually-hidden"
