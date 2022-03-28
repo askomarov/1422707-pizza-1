@@ -79,6 +79,7 @@ export default {
   },
   methods: {
     changeDough(dough) {
+      console.log(dough);
       this.order.dough.name = dough;
     },
     changeIngredients(ingredientName, ingredientCounter) {
@@ -118,6 +119,7 @@ export default {
   },
   computed: {
     doughPrice() {
+      console.log(this.pizzas.dough);
       return this.pizzas.dough.find(
         (item) => item.class === this.order.dough.name
       ).price;

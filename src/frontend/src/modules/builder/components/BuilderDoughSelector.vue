@@ -10,7 +10,7 @@
           :key="item.id"
         >
           <VRadioButton
-            :value="item.name"
+            :value="item.class"
             :checked="item.class === selectedDough.name"
             @change="changeDough"
             name="dough"
