@@ -1,6 +1,6 @@
 import Index from "../views/Index.vue";
 import Cart from "@/views/Cart.vue";
-import Login from "../views/Login.vue";
+import Login from "@/views/Login.vue";
 import Orders from "../views/Orders.vue";
 import Profile from "../views/Profile.vue";
 
@@ -13,6 +13,7 @@ const routes = [
     children: [
       {
         path: "/Login",
+        name: "Login",
         component: Login,
         meta: { layout: "AppLayoutDefault" },
       },

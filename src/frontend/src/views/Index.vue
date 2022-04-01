@@ -29,6 +29,7 @@
           :pizzaPrice="getPizzaPrice"
           :isBtnActive="isBtnActive()"
           @setPizzaName="setPizzaName"
+          @sendOrder="sendOrder"
           @onDrop="onDrop"
         ></BuilderPizza>
       </div>
@@ -79,7 +80,6 @@ export default {
   },
   methods: {
     changeDough(dough) {
-      console.log(dough);
       this.order.dough.name = dough;
     },
     changeIngredients(ingredientName, ingredientCounter) {
@@ -116,10 +116,14 @@ export default {
       }
       return this.order.ingredients;
     },
+    sendOrder() {
+      console.log("index vue");
+      console.log(this.order);
+      this.$emit("sendOrderPizza", this.order);
+    },
   },
   computed: {
     doughPrice() {
-      console.log(this.pizzas.dough);
       return this.pizzas.dough.find(
         (item) => item.class === this.order.dough.name
       ).price;

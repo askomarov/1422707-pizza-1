@@ -11,7 +11,7 @@
         >
           <VRadioButton
             :value="item.class"
-            :checked="item.class === selectedDough.name"
+            :checked="item.id === 1"
             @change="changeDough"
             name="dough"
             class="visually-hidden"

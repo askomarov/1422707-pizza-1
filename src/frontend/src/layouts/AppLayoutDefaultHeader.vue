@@ -11,10 +11,12 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link :to="{ name: 'Cart' }" href="cart.html"> 0 ₽ </router-link>
+      <router-link :to="{ name: 'Cart' }"> 0 ₽ </router-link>
     </div>
     <div class="header__user">
-      <a href="#" class="header__login"><span>Войти</span></a>
+      <router-link :to="{ name: 'Login' }" class="header__login"
+        ><span>Войти</span></router-link
+      >
     </div>
   </header>
 </template>
