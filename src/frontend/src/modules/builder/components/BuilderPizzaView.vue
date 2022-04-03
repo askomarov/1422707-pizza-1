@@ -53,13 +53,13 @@ export default {
       switch (this.orderedPizza.sauce.name) {
         case "tomato":
           foundationClass =
-            this.orderedPizza.dough.name === "Толстое"
+            this.orderedPizza.dough.name === "large"
               ? "pizza--foundation--big-tomato"
               : "pizza--foundation--small-tomato";
           break;
         case "creamy":
           foundationClass =
-            this.orderedPizza.dough.name === "Толстое"
+            this.orderedPizza.dough.name === "large"
               ? "pizza--foundation--big-creamy"
               : "pizza--foundation--small-creamy";
           break;

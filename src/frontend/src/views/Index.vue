@@ -29,6 +29,7 @@
           :pizzaPrice="getPizzaPrice"
           :isBtnActive="isBtnActive()"
           @setPizzaName="setPizzaName"
+          @sendOrder="sendOrder"
           @onDrop="onDrop"
         ></BuilderPizza>
       </div>
@@ -114,6 +115,11 @@ export default {
         this.order.ingredients[Object.keys(ingredient)[0]] += 1;
       }
       return this.order.ingredients;
+    },
+    sendOrder() {
+      console.log("index vue");
+      console.log(this.order);
+      this.$emit("sendOrderPizza", this.order);
     },
   },
   computed: {

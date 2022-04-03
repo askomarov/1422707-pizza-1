@@ -15,7 +15,12 @@
     ></BuilderPizzaView>
     <div class="content__result">
       <p>Итого: {{ pizzaPrice }} ₽</p>
-      <button type="button" class="button" :disabled="isBtnActive">
+      <button
+        type="button"
+        class="button"
+        :disabled="isBtnActive"
+        @click.prevent="sendOrder"
+      >
         Готовьте!
       </button>
     </div>
@@ -49,6 +54,11 @@ export default {
     },
     OnDrop(evt) {
       return this.$emit("onDrop", evt);
+    },
+    sendOrder() {
+      this.orderedPizza.price = this.pizzaPrice;
+      // console.log(this.orderedPizza);
+      this.$emit("sendPizzaPrice", this.orderedPizza);
     },
   },
 };
