@@ -4,7 +4,7 @@
       type="button"
       class="counter__button counter__button--minus"
       :disabled="counter <= MIN_INGREDIENT_COUNT"
-      @click="decreaseCounter"
+      @click="decreaseCounter(id)"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
@@ -19,7 +19,7 @@
       type="button"
       :disabled="counter >= MAX_INGREDIENT_COUNT"
       class="counter__button counter__button--plus"
-      @click="increaseCounter"
+      @click="increaseCounter(id)"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Builder");
 import {
   MAX_INGREDIENT_COUNT,
   MIN_INGREDIENT_COUNT,
@@ -38,6 +40,10 @@ export default {
       type: Number,
       required: true,
     },
+    id: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -47,12 +53,7 @@ export default {
     };
   },
   methods: {
-    increaseCounter() {
-      this.$emit("changeIngredients", ++this.counter);
-    },
-    decreaseCounter() {
-      this.$emit("changeIngredients", --this.counter);
-    },
+    ...mapActions(["increaseCounter", "decreaseCounter"]),
   },
   watch: {
     value: function (value) {

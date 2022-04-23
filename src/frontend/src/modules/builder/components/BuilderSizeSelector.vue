@@ -5,20 +5,20 @@
 
       <div class="sheet__content diameter">
         <label
-          v-for="item in sizes"
-          v-bind:key="item.id"
+          v-for="size in sizes"
+          v-bind:key="size.id"
           class="diameter__input"
-          :class="`diameter__input--${item.class}`"
+          :class="`diameter__input--${size.class}`"
         >
           <VRadioButton
             name="diameter"
-            :value="item.class"
+            :value="size.class"
             class="visually-hidden"
-            :checked="item.class === selectedSize.name"
-            @change="changeSize"
+            :checked="size.id === sizeID"
+            @change="setSizeID(size.id)"
           />
 
-          <span>{{ item.name }}</span>
+          <span>{{ size.name }}</span>
         </label>
       </div>
     </div>
@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("Builder");
+
 import VRadioButton from "@/components/VRadioButton.vue";
 
 export default {
@@ -33,20 +36,11 @@ export default {
   components: {
     VRadioButton,
   },
-  props: {
-    sizes: {
-      type: Array,
-      required: true,
-    },
-    selectedSize: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState(["sizes", "sizeID"]),
   },
   methods: {
-    changeSize(evt) {
-      this.$emit("changeSize", evt.target.value);
-    },
+    ...mapActions(["setSizeID"]),
   },
 };
 </script>

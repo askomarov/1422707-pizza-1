@@ -9,16 +9,13 @@
         @input="setPizzaName"
       />
     </label>
-    <BuilderPizzaView
-      :orderedPizza="orderedPizza"
-      @onDrop="OnDrop"
-    ></BuilderPizzaView>
+    <BuilderPizzaView />
     <div class="content__result">
       <p>Итого: {{ pizzaPrice }} ₽</p>
       <button
         type="button"
         class="button"
-        :disabled="isBtnActive"
+        :disabled="isBtnActive()"
         @click.prevent="sendOrder"
       >
         Готовьте!
@@ -28,37 +25,26 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapGetters, mapActions } = createNamespacedHelpers("Builder");
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
 
 export default {
   name: "BuilderPizza",
   components: { BuilderPizzaView },
-  props: {
-    orderedPizza: {
-      type: Object,
-      required: true,
-    },
-    pizzaPrice: {
-      type: Number,
-      required: true,
-    },
-    isBtnActive: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
+  computed: {
+    ...mapState(["ingredients", "pizzaName"]),
+    ...mapGetters(["pizzaPrice", "ingredientsPrice"]),
   },
   methods: {
+    ...mapActions(["getPizzaName"]),
     setPizzaName(evt) {
-      this.$emit("setPizzaName", evt.target.value);
+      this.getPizzaName(evt.target.value);
     },
-    OnDrop(evt) {
-      return this.$emit("onDrop", evt);
-    },
-    sendOrder() {
-      this.orderedPizza.price = this.pizzaPrice;
-      // console.log(this.orderedPizza);
-      this.$emit("sendPizzaPrice", this.orderedPizza);
+    isBtnActive() {
+      return this.pizzaName.trim().length !== 0 && this.ingredientsPrice !== 0
+        ? false
+        : true;
     },
   },
 };
