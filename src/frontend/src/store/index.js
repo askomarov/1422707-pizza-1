@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import builder from "./modules/builder";
-import cart from "./modules/cart";
+import builder from "./modules/builder.store";
+import cart from "./modules/cart.store";
 import orders from "./modules/orders";
 import auth from "./modules/auth";
 

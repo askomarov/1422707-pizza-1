@@ -12,7 +12,7 @@
     </div>
     <div class="header__cart">
       <router-link :to="{ name: 'Cart' }">
-        {{ this.pizzaPrice }} ₽
+        {{ this.totalCartPrice }} ₽
       </router-link>
     </div>
     <div class="header__user">
@@ -25,11 +25,11 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState } = createNamespacedHelpers("Builder");
+const { mapState } = createNamespacedHelpers("Cart");
 export default {
   name: "VHeader",
   computed: {
-    ...mapState(["doughList", "pizzaPrice"]),
+    ...mapState(["totalCartPrice"]),
   },
 };
 </script>

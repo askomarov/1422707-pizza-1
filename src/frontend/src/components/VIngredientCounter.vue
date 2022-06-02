@@ -1,10 +1,10 @@
 <template>
-  <div class="counter counter--orange ingredients__counter">
+  <div class="counter" :class="modClass">
     <button
       type="button"
       class="counter__button counter__button--minus"
       :disabled="counter <= MIN_INGREDIENT_COUNT"
-      @click="decreaseCounter(id)"
+      @click="decreaseCounter()"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
@@ -13,13 +13,14 @@
       name="counter"
       class="counter__input"
       :value="counter"
-      :max="MAX_INGREDIENT_COUNT"
+      :max="maxCounter"
     />
     <button
       type="button"
-      :disabled="counter >= MAX_INGREDIENT_COUNT"
+      :disabled="counter >= maxCounter"
       class="counter__button counter__button--plus"
-      @click="increaseCounter(id)"
+      :class="modClassBtn"
+      @click="increaseCounter()"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -27,12 +28,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapActions } = createNamespacedHelpers("Builder");
-import {
-  MAX_INGREDIENT_COUNT,
-  MIN_INGREDIENT_COUNT,
-} from "@/common/constants.js";
+import { MIN_INGREDIENT_COUNT } from "@/common/constants.js";
 export default {
   name: "VIngredientCounter",
   props: {
@@ -44,16 +40,32 @@ export default {
       type: String,
       required: true,
     },
+    modClass: {
+      type: String,
+      required: false,
+    },
+    modClassBtn: {
+      type: String,
+      required: false,
+    },
+    maxCounter: {
+      type: Number,
+      required: false,
+    },
   },
   data() {
     return {
-      MAX_INGREDIENT_COUNT,
       MIN_INGREDIENT_COUNT,
       counter: this.value,
     };
   },
   methods: {
-    ...mapActions(["increaseCounter", "decreaseCounter"]),
+    increaseCounter() {
+      this.$emit("changePlusIngredients", ++this.counter);
+    },
+    decreaseCounter() {
+      this.$emit("changeMinusIngredients", --this.counter);
+    },
   },
   watch: {
     value: function (value) {

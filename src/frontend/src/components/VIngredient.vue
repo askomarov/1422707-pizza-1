@@ -10,12 +10,18 @@
       <VIngredientCounter
         :value="item.count"
         :id="ingredient"
+        :modClass="modClass"
+        @changeMinusIngredients="changeMinusIngredients"
+        @changePlusIngredients="changePlusIngredients"
+        :maxCounter="MAX_INGREDIENT_COUNT"
       ></VIngredientCounter>
     </AppDrag>
   </li>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Builder");
 import { MAX_INGREDIENT_COUNT } from "@/common/constants.js";
 import AppDrag from "@/components/AppDrag.vue";
 import VIngredientCounter from "@/components/VIngredientCounter.vue";
@@ -33,9 +39,18 @@ export default {
     return {
       MAX_INGREDIENT_COUNT,
       ingredient: this.item.class,
+      modClass: "counter--orange ingredients__counter",
     };
   },
-  methods: {},
+  methods: {
+    ...mapActions(["increaseCounter", "decreaseCounter"]),
+    changePlusIngredients() {
+      this.increaseCounter(this.ingredient);
+    },
+    changeMinusIngredients() {
+      this.decreaseCounter(this.ingredient);
+    },
+  },
 };
 </script>
 

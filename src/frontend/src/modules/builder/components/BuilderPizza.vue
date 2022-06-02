@@ -4,6 +4,7 @@
       <span class="visually-hidden">Название пиццы</span>
       <input
         type="text"
+        :value="this.pizzaName"
         name="pizza_name"
         placeholder="Введите название пиццы"
         @input="setPizzaName"
@@ -11,7 +12,7 @@
     </label>
     <BuilderPizzaView />
     <div class="content__result">
-      <p>Итого: {{ pizzaPrice }} ₽</p>
+      <p>Итого: {{ this.pizzaPrice }} ₽</p>
       <button
         type="button"
         class="button"
@@ -25,19 +26,28 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers("Builder");
+import { mapState, mapGetters, mapActions } from "vuex";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
 
 export default {
   name: "BuilderPizza",
   components: { BuilderPizzaView },
   computed: {
-    ...mapState(["ingredients", "pizzaName"]),
-    ...mapGetters(["pizzaPrice", "ingredientsPrice"]),
+    ...mapState("Builder", ["ingredients", "pizzaName", "orderedPizza"]),
+    ...mapGetters("Builder", ["pizzaPrice", "ingredientsPrice"]),
   },
   methods: {
-    ...mapActions(["getPizzaName"]),
+    ...mapActions("Builder", [
+      "getPizzaName",
+      "resetState",
+      "setPizzaPrice",
+      "setOrderPizzaIngredients",
+    ]),
+    ...mapActions("Cart", [
+      "setTotalPizzaPrice",
+      "addNewOrderPizza",
+      "updateTotalPriceOrder",
+    ]),
     setPizzaName(evt) {
       this.getPizzaName(evt.target.value);
     },
@@ -45,6 +55,19 @@ export default {
       return this.pizzaName.trim().length !== 0 && this.ingredientsPrice !== 0
         ? false
         : true;
+    },
+    sendOrder() {
+      this.setOrderPizzaIngredients(this.ingredients);
+      this.addNewOrderPizza(this.orderedPizza);
+      this.setTotalPizzaPrice(this.pizzaPrice);
+      this.setPizzaPrice(this.pizzaPrice);
+      this.updateTotalPriceOrder();
+      this.resetState();
+    },
+    setNewPizzaName() {
+      let name = this.pizzaName;
+      console.log(name);
+      return name ? "Введите название пиццы" : true;
     },
   },
 };
