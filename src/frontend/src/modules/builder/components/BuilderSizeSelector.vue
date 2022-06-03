@@ -14,7 +14,7 @@
             name="diameter"
             :value="size.class"
             class="visually-hidden"
-            :checked="size.id === sizeID"
+            :checked="size.id === orderedPizza.size.id"
             @change="setSizeID(size.id)"
           />
 
@@ -37,7 +37,7 @@ export default {
     VRadioButton,
   },
   computed: {
-    ...mapState(["sizes", "sizeID"]),
+    ...mapState(["sizes", "orderedPizza"]),
   },
   methods: {
     ...mapActions(["setSizeID"]),

@@ -46,14 +46,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Cart", ["increaseAddCounter"]),
+    ...mapActions("Cart", ["increaseAddCounter", "decreaseAddCounter"]),
     increaseAddItemCount() {
-      this.item.count++;
       this.increaseAddCounter(this.item);
     },
     decreaseAddItemCount() {
-      this.item.count--;
-      this.increaseAddCounter(this.item);
+      this.decreaseAddCounter(this.item);
     },
   },
 };

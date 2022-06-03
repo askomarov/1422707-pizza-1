@@ -53,7 +53,6 @@ export default {
   },
   data() {
     return {
-      counter: this.pizza.count,
       modClassBtn: "counter__button--orange",
     };
   },
@@ -83,7 +82,7 @@ export default {
       return igreString.join(", ").toLowerCase();
     },
     getPizzaPrice() {
-      return this.pizza.price * this.counter;
+      return this.pizza.price * this.pizza.count;
     },
   },
   methods: {
@@ -91,19 +90,19 @@ export default {
       "increaseCounter",
       "decreaseCounter",
       "updateTotalPriceOrder",
+      "editPizza",
     ]),
     increasePizzaCount() {
-      this.counter++;
-      this.increaseCounter(this.pizza.id);
+      this.increaseCounter(this.pizza);
       this.updateTotalPriceOrder();
     },
     decreasePizzaCount() {
-      this.counter--;
-      this.decreaseCounter(this.pizza.id);
+      this.decreaseCounter(this.pizza);
       this.updateTotalPriceOrder();
     },
     changePizza() {
       console.log("changePizza");
+      this.editPizza(this.pizza);
       this.$router.push({ name: "Index" });
     },
   },

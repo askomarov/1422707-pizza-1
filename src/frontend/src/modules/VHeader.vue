@@ -11,9 +11,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link :to="{ name: 'Cart' }">
-        {{ this.totalCartPrice }} ₽
-      </router-link>
+      <router-link :to="{ name: 'Cart' }"> {{ totalCartPrice }} ₽ </router-link>
     </div>
     <div class="header__user">
       <router-link :to="{ name: 'Login' }" class="header__login"
@@ -30,6 +28,7 @@ export default {
   name: "VHeader",
   computed: {
     ...mapState(["totalCartPrice"]),
+    // ...mapGetters(["getTotalCartPrice"]),
   },
 };
 </script>

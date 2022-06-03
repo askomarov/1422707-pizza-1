@@ -1,3 +1,4 @@
+import Vue from "vue";
 import misc from "@/static/misc.json";
 import { normalizeMisc } from "@/common/helpers";
 import {
@@ -6,7 +7,8 @@ import {
   INCREASE_COUNTER,
   DECREASE_COUNTER,
   UPDATE_TOTAL_CART_PRICE,
-  SET_ADDITIONAL_GOODS_COUNTER,
+  INCREASE_ADDGOODS_COUNTER,
+  DECREASE_ADDGOODS_COUNTER,
   RESET_CART,
 } from "@/store/mutation-types.js";
 export default {
@@ -33,9 +35,6 @@ export default {
         return acc + item.price * item.count;
       }, 0);
     },
-    getTotalCartPrice(state) {
-      return state.totalPizzaPrice + state.totalCartPrice;
-    },
   },
 
   mutations: {
@@ -44,18 +43,18 @@ export default {
     },
     [ADD_NEW_PIZZA](state, payload) {
       state.orderPizzaList.push(payload);
-      payload.count = 1;
+      Vue.set(payload, "count", 1);
     },
-    [INCREASE_COUNTER](state, id) {
+    [INCREASE_COUNTER](state, payload) {
       state.orderPizzaList.map((pizza) => {
-        if (pizza.id === id) {
+        if (pizza.id === payload.id) {
           pizza.count++;
         }
       });
     },
-    [DECREASE_COUNTER](state, id) {
+    [DECREASE_COUNTER](state, payload) {
       state.orderPizzaList.map((pizza) => {
-        if (pizza.id === id) {
+        if (pizza.id === payload.id) {
           pizza.count = pizza.count - 1;
           if (pizza.count === 0) {
             state.orderPizzaList.splice(state.orderPizzaList.indexOf(pizza), 1);
@@ -63,10 +62,17 @@ export default {
         }
       });
     },
-    [SET_ADDITIONAL_GOODS_COUNTER](state, payload) {
+    [INCREASE_ADDGOODS_COUNTER](state, payload) {
       state.additionalGoods.map((item) => {
         if (item.id === payload.id) {
-          item.count = payload.count;
+          Vue.set(item, "count", ++item.count);
+        }
+      });
+    },
+    [DECREASE_ADDGOODS_COUNTER](state, payload) {
+      state.additionalGoods.map((item) => {
+        if (item.id === payload.id) {
+          Vue.set(item, "count", --item.count);
         }
       });
     },
@@ -98,14 +104,27 @@ export default {
     addNewOrderPizza({ commit }, payload) {
       commit(ADD_NEW_PIZZA, payload);
     },
-    increaseCounter({ commit }, id) {
-      commit(INCREASE_COUNTER, id);
+    increaseCounter({ commit }, payload) {
+      commit(INCREASE_COUNTER, payload);
     },
-    decreaseCounter({ commit }, id) {
-      commit(DECREASE_COUNTER, id);
+    decreaseCounter({ commit, state }, payload) {
+      commit(DECREASE_COUNTER, payload);
+      if (payload.count === 0 && state.orderPizzaList.length < 1) {
+        commit(RESET_CART);
+      }
     },
     increaseAddCounter({ commit, rootState }, payload) {
-      commit(SET_ADDITIONAL_GOODS_COUNTER, payload);
+      commit(INCREASE_ADDGOODS_COUNTER, payload);
+      commit(
+        UPDATE_TOTAL_CART_PRICE,
+        {
+          rootData: rootState,
+        },
+        { root: false }
+      );
+    },
+    decreaseAddCounter({ commit, rootState }, payload) {
+      commit(DECREASE_ADDGOODS_COUNTER, payload);
       commit(
         UPDATE_TOTAL_CART_PRICE,
         {

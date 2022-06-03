@@ -6,12 +6,12 @@
         <label
           v-for="dough in doughList"
           class="dough__input"
-          :class="`dough__input--${dough.class}`"
+          :class="`dough__input--${orderedPizza.dough.class}`"
           :key="dough.id"
         >
           <VRadioButton
             :value="dough.class"
-            :checked="dough.id === doughID"
+            :checked="dough.id === orderedPizza.dough.id"
             @change="setDoughtID(dough.id)"
             name="dough"
             class="visually-hidden"
@@ -37,7 +37,7 @@ export default {
     VRadioButton,
   },
   computed: {
-    ...mapState(["doughList", "doughID"]),
+    ...mapState(["doughList", "orderedPizza"]),
   },
   methods: {
     ...mapActions(["setDoughtID"]),

@@ -8,8 +8,8 @@
     >
       <VRadioButton
         name="sauce"
-        :value="sauce.class"
-        :checked="sauce.id === saucesID"
+        :value="orderedPizza.sauce.class"
+        :checked="sauce.id === orderedPizza.sauce.id"
         @change="setSaucesID(sauce.id)"
       />
       <span>{{ sauce.name }}</span>
@@ -29,7 +29,7 @@ export default {
     VRadioButton,
   },
   computed: {
-    ...mapState(["sauces", "saucesID"]),
+    ...mapState(["sauces", "orderedPizza"]),
   },
   methods: {
     ...mapActions(["setSaucesID"]),
