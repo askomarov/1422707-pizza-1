@@ -86,11 +86,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Builder", ["editPizza"]),
     ...mapActions("Cart", [
       "increaseCounter",
       "decreaseCounter",
       "updateTotalPriceOrder",
-      "editPizza",
     ]),
     increasePizzaCount() {
       this.increaseCounter(this.pizza);

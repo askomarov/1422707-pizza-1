@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { uniqueId } from "lodash";
 import misc from "@/static/misc.json";
 import { normalizeMisc } from "@/common/helpers";
 import {
@@ -22,9 +23,6 @@ export default {
   },
 
   getters: {
-    // additionalGoods: (state) => {
-    //   return (state.adds = normalizeMisc(misc));
-    // },
     gettotalPizzaPrice(state) {
       return state.orderPizzaList.reduce((acc, pizza) => {
         return acc + pizza.price * pizza.count;
@@ -35,6 +33,9 @@ export default {
         return acc + item.price * item.count;
       }, 0);
     },
+    getTotalCartPrice(state, getters) {
+      return getters.gettotalPizzaPrice + getters.getTotalAdditionlPrice;
+    },
   },
 
   mutations: {
@@ -42,8 +43,16 @@ export default {
       state.totalPizzaPrice = value;
     },
     [ADD_NEW_PIZZA](state, payload) {
-      state.orderPizzaList.push(payload);
-      Vue.set(payload, "count", 1);
+      let pizza = state.orderPizzaList.find((pizza) => pizza.id === payload.id);
+      if (!state.orderPizzaList.length || !pizza) {
+        state.orderPizzaList.push(payload);
+        Vue.set(payload, "count", 1);
+        Vue.set(payload, "id", uniqueId());
+      } else {
+        state.orderPizzaList.splice(state.orderPizzaList.indexOf(pizza), 1);
+        Vue.set(payload, "count", pizza.count);
+        state.orderPizzaList.push(payload);
+      }
     },
     [INCREASE_COUNTER](state, payload) {
       state.orderPizzaList.map((pizza) => {
@@ -141,6 +150,11 @@ export default {
         },
         { root: false }
       );
+    },
+    resetCartState({ commit }) {
+      console.log("reset");
+
+      commit(RESET_CART);
     },
   },
 };

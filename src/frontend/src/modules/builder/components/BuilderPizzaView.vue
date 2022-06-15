@@ -24,19 +24,19 @@ export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
   computed: {
-    ...mapState(["saucesID", "doughID", "ingredients"]),
+    ...mapState(["saucesID", "ingredients", "orderedPizza"]),
     pizzaFoundationClass() {
       let foundationClass = "";
-      switch (this.saucesID) {
+      switch (this.orderedPizza.sauce.id) {
         case 1:
           foundationClass =
-            this.doughID === 1
+            this.orderedPizza.dough.id === 1
               ? "pizza--foundation--small-tomato"
               : "pizza--foundation--big-tomato";
           break;
         case 2:
           foundationClass =
-            this.doughID === 2
+            this.orderedPizza.dough.id === 2
               ? "pizza--foundation--big-creamy"
               : "pizza--foundation--small-creamy";
           break;

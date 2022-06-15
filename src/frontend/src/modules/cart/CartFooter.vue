@@ -30,15 +30,17 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState } = createNamespacedHelpers("Cart");
+const { mapState, mapActions } = createNamespacedHelpers("Cart");
 export default {
   name: "cartFooter",
   computed: {
     ...mapState(["totalCartPrice", "orderPizzaList"]),
   },
   methods: {
+    ...mapActions(["resetCartState"]),
     makeOrder() {
       this.$router.push("popup");
+      this.resetCartState();
     },
   },
 };

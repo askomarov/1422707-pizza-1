@@ -4,7 +4,7 @@
       <span class="visually-hidden">Название пиццы</span>
       <input
         type="text"
-        :value="this.pizzaName"
+        :value="orderedPizza.pizzaName"
         name="pizza_name"
         placeholder="Введите название пиццы"
         @input="setPizzaName"
@@ -12,7 +12,7 @@
     </label>
     <BuilderPizzaView />
     <div class="content__result">
-      <p>Итого: {{ this.pizzaPrice }} ₽</p>
+      <p>Итого: {{ pizzaPrice }} ₽</p>
       <button
         type="button"
         class="button"
@@ -52,20 +52,21 @@ export default {
       this.getPizzaName(evt.target.value);
     },
     isBtnActive() {
-      return this.pizzaName.trim().length !== 0 && this.ingredientsPrice !== 0
+      return this.orderedPizza.pizzaName.trim().length !== 0 &&
+        this.ingredientsPrice !== 0
         ? false
         : true;
     },
     sendOrder() {
       this.setOrderPizzaIngredients(this.ingredients);
-      this.addNewOrderPizza(this.orderedPizza);
-      this.setTotalPizzaPrice(this.pizzaPrice);
       this.setPizzaPrice(this.pizzaPrice);
       this.updateTotalPriceOrder();
+      this.addNewOrderPizza(this.orderedPizza);
+      this.setTotalPizzaPrice(this.pizzaPrice);
       this.resetState();
     },
     setNewPizzaName() {
-      let name = this.pizzaName;
+      let name = this.orderedPizza.pizzaName;
       console.log(name);
       return name ? "Введите название пиццы" : true;
     },
