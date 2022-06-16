@@ -10,11 +10,11 @@
       <VIngredientCounter
         :value="item.count"
         :id="ingredient"
-        :modClass="modClass"
+        class="counter--orange ingredients__counter"
         @changeMinusIngredients="changeMinusIngredients"
         @changePlusIngredients="changePlusIngredients"
         :maxCounter="MAX_INGREDIENT_COUNT"
-      ></VIngredientCounter>
+      />
     </AppDrag>
   </li>
 </template>
@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       MAX_INGREDIENT_COUNT,
+      modClass: "",
       ingredient: this.item.class,
-      modClass: "counter--orange ingredients__counter",
     };
   },
   methods: {

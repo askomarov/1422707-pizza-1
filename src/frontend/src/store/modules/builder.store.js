@@ -24,7 +24,6 @@ const setupState = () => ({
     count: 0,
   })),
   orderedPizza: {
-    // id: uniqueId(),
     price: 0,
     dough: pizza.dough[0],
     sauce: pizza.sauces[0],
@@ -61,13 +60,14 @@ export default {
       Object.assign(state, setupState());
     },
     [GET_DOUGH_ID](state, id) {
-      state.orderedPizza.dough = state.doughList[id - 1];
+      state.orderedPizza.dough = state.doughList.find((item) => item.id === id);
     },
     [GET_SAUCES_ID](state, id) {
-      state.orderedPizza.sauce = state.sauces[id - 1];
+      state.orderedPizza.sauce = state.sauces.find((item) => item.id === id);
     },
     [GET_SIZE_ID](state, id) {
-      state.orderedPizza.size = state.sizes[id - 1];
+      // state.orderedPizza.size = state.sizes[id - 1];
+      state.orderedPizza.size = state.sizes.find((item) => item.id === id);
     },
     [GET_PIZZA_NAME](state, name) {
       state.orderedPizza.pizzaName = name;

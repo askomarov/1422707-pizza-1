@@ -18,8 +18,6 @@ export default {
   name: "popup",
   methods: {
     closePopup() {
-      console.log("closePopup");
-
       this.$router.push("/");
     },
   },

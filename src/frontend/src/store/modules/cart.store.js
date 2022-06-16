@@ -152,8 +152,6 @@ export default {
       );
     },
     resetCartState({ commit }) {
-      console.log("reset");
-
       commit(RESET_CART);
     },
   },

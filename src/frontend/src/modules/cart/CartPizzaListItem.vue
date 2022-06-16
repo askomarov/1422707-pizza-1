@@ -23,8 +23,7 @@
       :modClassBtn="modClassBtn"
       @changePlusIngredients="increasePizzaCount"
       @changeMinusIngredients="decreasePizzaCount"
-    >
-    </VIngredientCounter>
+    />
 
     <div class="cart-list__price">
       <b>{{ getPizzaPrice }} ₽</b>
@@ -101,7 +100,6 @@ export default {
       this.updateTotalPriceOrder();
     },
     changePizza() {
-      console.log("changePizza");
       this.editPizza(this.pizza);
       this.$router.push({ name: "Index" });
     },

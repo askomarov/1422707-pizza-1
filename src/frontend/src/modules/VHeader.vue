@@ -29,7 +29,6 @@ const { mapGetters } = createNamespacedHelpers("Cart");
 export default {
   name: "VHeader",
   computed: {
-    // ...mapState(["totalCartPrice"]),
     ...mapGetters(["getTotalCartPrice"]),
   },
 };

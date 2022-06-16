@@ -16,7 +16,7 @@
       <button
         type="button"
         class="button"
-        :disabled="isBtnActive()"
+        :disabled="isBtnActive"
         @click.prevent="sendOrder"
       >
         Готовьте!
@@ -35,6 +35,12 @@ export default {
   computed: {
     ...mapState("Builder", ["ingredients", "pizzaName", "orderedPizza"]),
     ...mapGetters("Builder", ["pizzaPrice", "ingredientsPrice"]),
+    isBtnActive() {
+      return this.orderedPizza.pizzaName.trim().length !== 0 &&
+        this.ingredientsPrice !== 0
+        ? false
+        : true;
+    },
   },
   methods: {
     ...mapActions("Builder", [
@@ -51,12 +57,6 @@ export default {
     setPizzaName(evt) {
       this.getPizzaName(evt.target.value);
     },
-    isBtnActive() {
-      return this.orderedPizza.pizzaName.trim().length !== 0 &&
-        this.ingredientsPrice !== 0
-        ? false
-        : true;
-    },
     sendOrder() {
       this.setOrderPizzaIngredients(this.ingredients);
       this.setPizzaPrice(this.pizzaPrice);
@@ -67,7 +67,6 @@ export default {
     },
     setNewPizzaName() {
       let name = this.orderedPizza.pizzaName;
-      console.log(name);
       return name ? "Введите название пиццы" : true;
     },
   },

@@ -12,7 +12,7 @@
       Перейти к конструктору<br />чтоб собрать ещё одну пиццу
     </p>
     <div class="footer__price">
-      <b>Итого: {{ totalCartPrice }} ₽</b>
+      <b>Итого: {{ getTotalCartPrice }} ₽</b>
     </div>
 
     <div class="footer__submit">
@@ -30,11 +30,12 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions } = createNamespacedHelpers("Cart");
+const { mapState, mapGetters, mapActions } = createNamespacedHelpers("Cart");
 export default {
   name: "cartFooter",
   computed: {
-    ...mapState(["totalCartPrice", "orderPizzaList"]),
+    ...mapState(["orderPizzaList"]),
+    ...mapGetters(["getTotalCartPrice"]),
   },
   methods: {
     ...mapActions(["resetCartState"]),

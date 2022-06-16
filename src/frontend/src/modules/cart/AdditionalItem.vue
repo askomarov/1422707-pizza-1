@@ -9,12 +9,11 @@
       <VIngredientCounter
         :value="item.count"
         :id="item.id.toString()"
-        :modClass="modClass"
+        class="additional-list__counter"
         :modClassBtn="modClassBtn"
         @changePlusIngredients="increaseAddItemCount"
         @changeMinusIngredients="decreaseAddItemCount"
-      >
-      </VIngredientCounter>
+      />
 
       <div class="additional-list__price">
         <b>× {{ item.price }}</b>
@@ -36,7 +35,6 @@ export default {
   },
   data() {
     return {
-      modClass: "additional-list__counter",
       modClassBtn: "counter__button--orange",
     };
   },
