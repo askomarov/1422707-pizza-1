@@ -1,13 +1,13 @@
 <template>
-  <AppDrop @drop="OnDrop">
+  <AppDrop @drop="getIngredient">
     <div class="content__constructor">
       <div class="pizza" :class="pizzaFoundationClass">
         <div class="pizza__wrapper">
           <div
-            v-for="(count, name) in this.orderedPizza.ingredients"
-            :key="name + count"
+            v-for="item in ingredients"
+            :key="item.class"
             class="pizza__filling"
-            :class="ingredintClass(count, name)"
+            :class="ingredintClass(item.count, item.class)"
           ></div>
         </div>
       </div>
@@ -16,18 +16,36 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("Builder");
 import AppDrop from "@/components/AppDrop.vue";
 
 export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
-  props: {
-    orderedPizza: {
-      type: Object,
-      required: true,
+  computed: {
+    ...mapState(["saucesID", "ingredients", "orderedPizza"]),
+    pizzaFoundationClass() {
+      let foundationClass = "";
+      switch (this.orderedPizza.sauce.id) {
+        case 1:
+          foundationClass =
+            this.orderedPizza.dough.id === 1
+              ? "pizza--foundation--small-tomato"
+              : "pizza--foundation--big-tomato";
+          break;
+        case 2:
+          foundationClass =
+            this.orderedPizza.dough.id === 2
+              ? "pizza--foundation--big-creamy"
+              : "pizza--foundation--small-creamy";
+          break;
+      }
+      return foundationClass;
     },
   },
   methods: {
+    ...mapActions(["increaseCounter"]),
     ingredintClass(count, name) {
       let className;
       switch (count) {
@@ -46,25 +64,9 @@ export default {
     OnDrop(evt) {
       return this.$emit("onDrop", evt);
     },
-  },
-  computed: {
-    pizzaFoundationClass() {
-      let foundationClass = "";
-      switch (this.orderedPizza.sauce.name) {
-        case "tomato":
-          foundationClass =
-            this.orderedPizza.dough.name === "large"
-              ? "pizza--foundation--big-tomato"
-              : "pizza--foundation--small-tomato";
-          break;
-        case "creamy":
-          foundationClass =
-            this.orderedPizza.dough.name === "large"
-              ? "pizza--foundation--big-creamy"
-              : "pizza--foundation--small-creamy";
-          break;
-      }
-      return foundationClass;
+    getIngredient(id) {
+      let name = Object.keys(id)[0];
+      this.increaseCounter(name);
     },
   },
 };

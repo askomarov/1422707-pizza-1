@@ -1,5 +1,4 @@
 <template>
-  <!-- <input type="radio" @change="changeValue" :checked="checked" :value="value" /> -->
   <input type="radio" v-on="$listeners" :checked="checked" />
 </template>
 

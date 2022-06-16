@@ -2,42 +2,37 @@
   <div class="ingredients__sauce">
     <p>Основной соус:</p>
     <label
-      v-for="item in sauces"
-      :key="item.id"
+      v-for="sauce in sauces"
+      :key="sauce.id"
       class="radio ingredients__input"
     >
       <VRadioButton
         name="sauce"
-        :value="item.class"
-        :checked="item.class === selectedSouce.name"
-        @change="changeSouce"
+        :value="orderedPizza.sauce.class"
+        :checked="sauce.id === orderedPizza.sauce.id"
+        @change="setSaucesID(sauce.id)"
       />
-      <span>{{ item.name }}</span>
+      <span>{{ sauce.name }}</span>
     </label>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("Builder");
+
 import VRadioButton from "@/components/VRadioButton.vue";
+
 export default {
   name: "BuilderSouceSelector",
   components: {
     VRadioButton,
   },
-  props: {
-    sauces: {
-      type: Array,
-      required: true,
-    },
-    selectedSouce: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState(["sauces", "orderedPizza"]),
   },
   methods: {
-    changeSouce(evt) {
-      this.$emit("changeSouce", evt.target.value);
-    },
+    ...mapActions(["setSaucesID"]),
   },
 };
 </script>

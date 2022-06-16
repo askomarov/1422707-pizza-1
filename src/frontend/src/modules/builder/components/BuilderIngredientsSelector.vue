@@ -4,11 +4,7 @@
       <h2 class="title title--small sheet__title">Выберите ингредиенты</h2>
 
       <div class="sheet__content ingredients">
-        <BuilderSouceSelector
-          :sauces="sauces"
-          :selectedSouce="selectedSouce"
-          @changeSouce="changeSouce"
-        />
+        <BuilderSouceSelector />
 
         <div class="ingredients__filling">
           <p>Начинка:</p>
@@ -18,8 +14,6 @@
               v-for="item in ingredients"
               :key="item.class"
               :item="item"
-              @changeIngredients="changeIngredients"
-              :selectedIngredients="selectedIngredients"
             />
           </ul>
         </div>
@@ -29,6 +23,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("Builder");
+
 import VIngredient from "@/components/VIngredient.vue";
 import BuilderSouceSelector from "@/modules/builder/components/BuilderSouceSelector.vue";
 
@@ -38,38 +35,10 @@ export default {
     BuilderSouceSelector,
     VIngredient,
   },
-  data() {
-    return {
-      ingredientsToOrder: {},
-    };
+  computed: {
+    ...mapState(["ingredients"]),
   },
-  props: {
-    sauces: {
-      type: Array,
-      required: true,
-    },
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-    selectedIngredients: {
-      type: Object,
-      required: true,
-    },
-    selectedSouce: {
-      type: Object,
-      required: true,
-    },
-  },
-  methods: {
-    changeIngredients(name, counter) {
-      this.$set(this.ingredientsToOrder, name, counter);
-      this.$emit("changeIngredients", name, counter);
-    },
-    changeSouce(value) {
-      this.$emit("changeSouce", value);
-    },
-  },
+  methods: {},
 };
 </script>
 

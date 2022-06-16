@@ -4,22 +4,22 @@
       <h2 class="title title--small sheet__title">Выберите тесто</h2>
       <div class="sheet__content dough">
         <label
-          v-for="item in doughs"
+          v-for="dough in doughList"
           class="dough__input"
-          :class="`dough__input--${item.class}`"
-          :key="item.id"
+          :class="`dough__input--${orderedPizza.dough.class}`"
+          :key="dough.id"
         >
           <VRadioButton
-            :value="item.class"
-            :checked="item.id === 1"
-            @change="changeDough"
+            :value="dough.class"
+            :checked="dough.id === orderedPizza.dough.id"
+            @change="setDoughtID(dough.id)"
             name="dough"
             class="visually-hidden"
           >
           </VRadioButton>
 
-          <b>{{ item.name }}</b>
-          <span>{{ item.description }}</span>
+          <b>{{ dough.name }}</b>
+          <span>{{ dough.description }}</span>
         </label>
       </div>
     </div>
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("Builder");
 import VRadioButton from "@/components/VRadioButton.vue";
 
 export default {
@@ -34,20 +36,11 @@ export default {
   components: {
     VRadioButton,
   },
-  props: {
-    doughs: {
-      type: Array,
-      required: true,
-    },
-    selectedDough: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState(["doughList", "orderedPizza"]),
   },
   methods: {
-    changeDough(evt) {
-      this.$emit("changeDough", evt.target.value);
-    },
+    ...mapActions(["setDoughtID"]),
   },
 };
 </script>
