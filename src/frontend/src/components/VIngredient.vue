@@ -1,7 +1,7 @@
 <template>
   <li class="ingredients__item">
     <AppDrag
-      :transfer-data="{ [this.ingredient]: this.item.count }"
+      :transfer-data="{ [this.getClassName]: this.item.count }"
       :isDraggble="this.item.count !== MAX_INGREDIENT_COUNT"
     >
       <span class="filling" :class="`filling--${item.class}`">{{
@@ -9,13 +9,14 @@
       }}</span>
       <VIngredientCounter
         :value="item.count"
-        :id="ingredient"
+        :id="getClassName"
         class="counter--orange ingredients__counter"
         @changeMinusIngredients="changeMinusIngredients"
         @changePlusIngredients="changePlusIngredients"
         :maxCounter="MAX_INGREDIENT_COUNT"
       />
     </AppDrag>
+    {{ getClassName }}
   </li>
 </template>
 
@@ -38,17 +39,20 @@ export default {
   data() {
     return {
       MAX_INGREDIENT_COUNT,
-      modClass: "",
-      ingredient: this.item.class,
     };
+  },
+  computed: {
+    getClassName() {
+      return this.item.class;
+    },
   },
   methods: {
     ...mapActions(["increaseCounter", "decreaseCounter"]),
     changePlusIngredients() {
-      this.increaseCounter(this.ingredient);
+      this.increaseCounter(this.getClassName);
     },
     changeMinusIngredients() {
-      this.decreaseCounter(this.ingredient);
+      this.decreaseCounter(this.getClassName);
     },
   },
 };
