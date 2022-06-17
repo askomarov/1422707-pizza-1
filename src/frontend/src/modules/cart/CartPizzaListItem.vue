@@ -21,8 +21,8 @@
       :value="pizza.count"
       :id="pizza.id"
       :modClassBtn="modClassBtn"
-      @changePlusIngredients="increasePizzaCount"
-      @changeMinusIngredients="decreasePizzaCount"
+      @incrementClick="increasePizzaCount"
+      @decrementClick="decreasePizzaCount"
     />
 
     <div class="cart-list__price">

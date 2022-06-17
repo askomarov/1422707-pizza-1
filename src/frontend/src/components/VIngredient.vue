@@ -11,12 +11,11 @@
         :value="item.count"
         :id="getClassName"
         class="counter--orange ingredients__counter"
-        @changeMinusIngredients="changeMinusIngredients"
-        @changePlusIngredients="changePlusIngredients"
+        @incrementClick="changePlusIngredients"
+        @decrementClick="changeMinusIngredients"
         :maxCounter="MAX_INGREDIENT_COUNT"
       />
     </AppDrag>
-    {{ getClassName }}
   </li>
 </template>
 
@@ -49,9 +48,11 @@ export default {
   methods: {
     ...mapActions(["increaseCounter", "decreaseCounter"]),
     changePlusIngredients() {
+      // this.item.count++;
       this.increaseCounter(this.getClassName);
     },
     changeMinusIngredients() {
+      // this.item.count--;
       this.decreaseCounter(this.getClassName);
     },
   },

@@ -11,8 +11,8 @@
         :id="item.id.toString()"
         class="additional-list__counter"
         :modClassBtn="modClassBtn"
-        @changePlusIngredients="increaseAddItemCount"
-        @changeMinusIngredients="decreaseAddItemCount"
+        @incrementClick="increaseAddItemCount"
+        @decrementClick="decreaseAddItemCount"
       />
 
       <div class="additional-list__price">

@@ -1,10 +1,10 @@
 <template>
-  <div class="counter" :class="modClass">
+  <div class="counter">
     <button
       type="button"
       class="counter__button counter__button--minus"
-      :disabled="counter <= MIN_INGREDIENT_COUNT"
-      @click="decreaseCounter()"
+      :disabled="value <= MIN_INGREDIENT_COUNT"
+      @click="$emit('decrementClick', $event)"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
@@ -12,15 +12,15 @@
       type="text"
       name="counter"
       class="counter__input"
-      :value="counter"
+      :value="value"
       :max="maxCounter"
     />
     <button
       type="button"
-      :disabled="counter >= maxCounter"
+      :disabled="value >= maxCounter"
       class="counter__button counter__button--plus"
       :class="modClassBtn"
-      @click="increaseCounter()"
+      @click="$emit('incrementClick', $event)"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -40,10 +40,6 @@ export default {
       type: String,
       required: true,
     },
-    modClass: {
-      type: String,
-      required: false,
-    },
     modClassBtn: {
       type: String,
       required: false,
@@ -56,21 +52,7 @@ export default {
   data() {
     return {
       MIN_INGREDIENT_COUNT,
-      counter: this.value,
     };
-  },
-  methods: {
-    increaseCounter() {
-      this.$emit("changePlusIngredients", ++this.counter);
-    },
-    decreaseCounter() {
-      this.$emit("changeMinusIngredients", --this.counter);
-    },
-  },
-  watch: {
-    value: function (value) {
-      this.counter = value;
-    },
   },
 };
 </script>
